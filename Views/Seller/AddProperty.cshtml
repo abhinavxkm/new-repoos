@@ -1,0 +1,61 @@
+﻿@model EasyHousingSolution.Models.PropertyViewModel
+@{
+	ViewData["Title"] = "Add Property";
+}
+<h2>Add Property</h2>
+<form asp-action="AddProperty" method="post">
+	<div class="form-group">
+		<label asp-for="PropertyName"></label>
+		<input asp-for="PropertyName" class="form-control" />
+		<span asp-validation-for="PropertyName" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="PropertyType"></label>
+		<input asp-for="PropertyType" class="form-control" />
+		<span asp-validation-for="PropertyType" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="PropertyOption"></label>
+		<select asp-for="PropertyOption" class="form-control">
+			<option value="">-- Select Option --</option>
+			<option value="Sell">Sell</option>
+			<option value="Rent">Rent</option>
+		</select>
+		<span asp-validation-for="PropertyOption" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Description"></label>
+<textarea asp-for="Description" class="form-control"></textarea>
+	</div>
+	<div class="form-group">
+		<label asp-for="Address"></label>
+		<input asp-for="Address" class="form-control" />
+		<span asp-validation-for="Address" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Region"></label>
+		<input asp-for="Region" class="form-control" />
+		<span asp-validation-for="Region" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="PriceRange"></label>
+		<input asp-for="PriceRange" class="form-control" />
+		<span asp-validation-for="PriceRange" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="InitialDeposit"></label>
+		<input asp-for="InitialDeposit" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="Landmark"></label>
+		<input asp-for="Landmark" class="form-control" />
+		<span asp-validation-for="Landmark" class="text-danger"></span>
+	</div>
+	<br />
+	<button type="submit" class="btn btn-primary">Add Property</button>
+</form>
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

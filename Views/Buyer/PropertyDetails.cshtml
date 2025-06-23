@@ -1,0 +1,79 @@
+﻿@model EasyHousingSolution.Models.Property
+
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<h2>@Model.PropertyName</h2>
+
+
+<div class="content-card">
+    @if (Model.Images != null && Model.Images.Any())
+    {
+        <div class="row g-2">
+            @foreach (var image in Model.Images)
+            {
+                <div class="col-lg-4 col-md-6">
+                    @* The src attribute points to our new ImageController action *@
+                    <img src="@Url.Action("Get", "Image", new { id = image.ImageId })" class="img-fluid rounded" alt="Property Image" />
+                </div>
+            }
+        </div>
+        <hr class="my-4" />
+    }
+    <table class="table table-bordered">
+        <tr><th>Type</th><td>@Model.PropertyType</td></tr>
+        <tr><th>Option</th><td>@Model.PropertyOption</td></tr>
+        <tr><th>Description</th><td>@Model.Description</td></tr>
+        <tr><th>Address</th><td>@Model.Address</td></tr>
+        <tr><th>Region</th><td>@Model.Region</td></tr>
+        <tr><th>Price</th><td>@Model.PriceRange</td></tr>
+        <tr><th>Initial Deposit</th><td>@Model.InitialDeposit</td></tr>
+        <tr><th>Landmark</th><td>@Model.Landmark</td></tr>
+    </table>
+</div>
+
+
+<hr />
+<h4>Contact Seller</h4>
+
+<button id="getContactBtn" class="btn btn-info">Get Contact Details</button>
+
+<div id="contactDetails" class="mt-3" style="display:none;">
+    @if (Model.Seller != null)
+    {
+        <p><strong>Email:</strong> <a href="mailto:@Model.Seller.EmailId">@Model.Seller.EmailId</a></p>
+        <p><strong>Phone:</strong> @Model.Seller.PhoneNo</p>
+    }
+    else
+    {
+        <p class="text-danger">Contact details are not available for this seller.</p>
+    }
+</div>
+
+
+
+<a href="/Buyer/Search" class="btn btn-secondary">Back to Search</a>
+<a class="btn btn-success add-to-cart-btn"
+   asp-action="AddToCart"
+   asp-controller="Buyer"
+   asp-route-propertyId="@Model.PropertyId"
+   asp-route-buyerId="1">
+    Add to Cart
+</a>
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Listen for a click on our new button
+            $('#getContactBtn').on('click', function () {
+                // When clicked, smoothly reveal the hidden contact details div
+                $('#contactDetails').slideDown();
+
+                // Hide the button itself so it can't be clicked again
+                $(this).hide();
+            });
+
+        });
+    </script>
+}
+

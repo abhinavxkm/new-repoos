@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Find a Home You'll Love";
+}
+
+<!-- Hero Section with Background Image -->
+<div class="hero-section">
+    <div class="hero-content text-center text-white">
+        <h1 class="display-4 fw-bold">Find a home you'll love</h1>
+
+        <div class="sub-nav my-4">
+            <a asp-controller="Buyer" asp-action="Search" class="active">Buy</a>
+            <a asp-controller="Buyer" asp-action="Search" asp-route-propertyOption="Rent">Rent</a>
+            <a asp-controller="Seller" asp-action="Dashboard">Sell</a>
+        </div>
+
+        <!-- Translucent Login Box -->
+        <div class="login-box mx-auto">
+            <h2 class="h3 mb-4 fw-bold text-white">Welcome Back</h2>
+            <form asp-controller="Login" asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" name="UserName" class="form-control" placeholder="Username" required>
+                </div>
+                <div class="input-group mb-4">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" name="Password" class="form-control" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-danger btn-lg w-100">Sign In</button>
+                <p class="mt-4 text-light">
+                    Don't have an account?
+                    <a asp-controller="Registration" asp-action="Register" class="fw-bold">Sign up</a>
+                </p>
+            </form>
+        </div>
+        <a href="#featured-homes" class="scroll-down-arrow"><i class="fas fa-chevron-down"></i></a>
+    </div>
+</div>
+
+<!-- Featured Homes Section -->
+<div id="featured-homes" class="container py-5">
+    <h2 class="text-center fw-bold mb-5">Explore Homes In Your Area</h2>
+    <div class="row">
+        <!-- Property Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card property-card h-100">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop" class="card-img-top" alt="Modern House">
+                <div class="card-body">
+                    <h5 class="card-title">$550,000</h5>
+                    <p class="card-text">4 beds | 3 baths | 2,200 sqft</p>
+                    <p class="card-text text-muted">123 Maple St, Springfield, IL</p>
+                </div>
+            </div>
+        </div>
+        <!-- Property Card 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card property-card h-100">
+                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop" alt="Suburban Home">
+                <div class="card-body">
+                    <h5 class="card-title">$720,000</h5>
+                    <p class="card-text">5 beds | 4 baths | 3,100 sqft</p>
+                    <p class="card-text text-muted">456 Oak Ave, Greenwood, CA</p>
+                </div>
+            </div>
+        </div>
+        <!-- Property Card 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card property-card h-100">
+                <img src="https://images.unsplash.com/photo-1605276374104-5de67d2b596a?q=80&w=1974&auto=format&fit=crop" alt="Luxury Villa">
+                <div class="card-body">
+                    <h5 class="card-title">$1,250,000</h5>
+                    <p class="card-text">6 beds | 5 baths | 4,500 sqft</p>
+                    <p class="card-text text-muted">789 Pine Ln, Lakeside, TX</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

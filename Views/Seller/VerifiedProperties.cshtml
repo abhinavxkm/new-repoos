@@ -1,0 +1,45 @@
+﻿@model List<EasyHousingSolution.Models.Property>
+@{
+    ViewData["Title"] = "Verified Properties";
+}
+<h2>Your Verified Properties</h2>
+@if (!Model.Any())
+{
+    <p>No verified properties found.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Property Name</th>
+                <th>Type</th>
+                <th>Option</th>
+                <th>Price</th>
+                <th>Landmark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PropertyName</td>
+                    <td>@item.PropertyType</td>
+                    <td>@item.PropertyOption</td>
+                    <td>@item.PriceRange</td>
+                    <td>@item.Landmark</td>
+                    <td class="text-center">
+                        <a asp-action="EditProperty" asp-route-id="@item.PropertyId" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+
+                        @* --- ADD THIS NEW LINK --- *@
+                        <a asp-action="UploadImages" asp-route-id="@item.PropertyId" class="btn btn-sm btn-info">
+                            <i class="fas fa-camera"></i> Images
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
