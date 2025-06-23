@@ -1,0 +1,72 @@
+﻿@model List<EasyHousingSolution.Models.Property>
+
+@{
+    ViewData["Title"] = "Compare Properties";
+}
+
+<h2><i class="fas fa-exchange-alt"></i> Property Comparison</h2>
+<p>Here is a side-by-side comparison of your selected properties.</p>
+<hr />
+
+@if (Model != null && Model.Count == 2)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped comparison-table">
+            <thead class="table-info">
+                <tr>
+                    <th style="width: 20%;">Feature</th>
+                    <th style="width: 40%;">@Model[0].PropertyName</th>
+                    <th style="width: 40%;">@Model[1].PropertyName</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Price / Rent</strong></td>
+                    <td>@Model[0].PriceRange.ToString("C")</td>
+                    <td>@Model[1].PriceRange.ToString("C")</td>
+                </tr>
+                <tr>
+                    <td><strong>Listing Type</strong></td>
+                    <td>@Model[0].PropertyOption</td>
+                    <td>@Model[1].PropertyOption</td>
+                </tr>
+                <tr>
+                    <td><strong>Property Type</strong></td>
+                    <td>@Model[0].PropertyType</td>
+                    <td>@Model[1].PropertyType</td>
+                </tr>
+                <tr>
+                    <td><strong>Address</strong></td>
+                    <td>@Model[0].Address</td>
+                    <td>@Model[1].Address</td>
+                </tr>
+                <tr>
+                    <td><strong>Region</strong></td>
+                    <td>@Model[0].Region</td>
+                    <td>@Model[1].Region</td>
+                </tr>
+                <tr>
+                    <td><strong>Description</strong></td>
+                    <td>@Model[0].Description</td>
+                    <td>@Model[1].Description</td>
+                </tr>
+                <tr>
+                    <td><strong>Initial Deposit</strong></td>
+                    <td>@(Model[0].InitialDeposit?.ToString("C") ?? "N/A")</td>
+                    <td>@(Model[1].InitialDeposit?.ToString("C") ?? "N/A")</td>
+                </tr>
+                <tr>
+                    <td><strong>Seller</strong></td>
+                    <td>@Model[0].Seller?.FirstName @Model[0].Seller?.LastName</td>
+                    <td>@Model[1].Seller?.FirstName @Model[1].Seller?.LastName</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">Something went wrong. Please go back to the search page and select exactly two properties to compare.</div>
+}
+
+<a asp-action="Search" class="btn btn-secondary mt-3"><i class="fas fa-arrow-left"></i> Back to Search</a>

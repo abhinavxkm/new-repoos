@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Seller Dashboard";
+    var userName = Context.Session.GetString("UserName");
+}
+<div class="content-card">
+    @* This will display success messages after adding or editing a property *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="text-center mb-5">
+        <h1 class="display-5 text-white">Welcome, @userName!</h1>
+        <p class="lead text-white-50">This is your dashboard. From here, you can manage all your property listings.</p>
+    </div>
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="p-4 rounded-3 stat-card h-100">
+                <i class="fas fa-plus-circle fa-3x text-primary mb-3"></i>
+                <h5 class="card-title text-white">Add New Property</h5>
+                <p class="card-text text-white-50">List a new property for sale or rent. It will be sent to an administrator for verification.</p>
+                <a class="btn btn-primary" asp-action="AddProperty" asp-controller="Seller">
+                    Add Property
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 rounded-3 stat-card h-100">
+                <i class="fas fa-list-alt fa-3x text-info mb-3"></i>
+                <h5 class="card-title text-white">Manage My Listings</h5>
+                <p class="card-text text-white-50">View and manage your properties based on their verification status.</p>
+                @* These links correctly point to actions without a hardcoded ID *@
+                <a class="btn btn-sm btn-outline-success d-block mb-2" asp-action="VerifiedProperties" asp-controller="Seller">
+                    View Verified Properties
+                </a>
+                <a class="btn btn-sm btn-outline-warning d-block mb-2" asp-action="PendingProperties" asp-controller="Seller">
+                    View Pending Properties
+                </a>
+                <a class="btn btn-sm btn-outline-danger d-block" asp-action="DeactivatedProperties" asp-controller="Seller">
+                    View Deactivated Properties
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 rounded-3 stat-card h-100">
+                <i class="fas fa-user-edit fa-3x text-light mb-3"></i>
+                <h5 class="card-title text-white">Account</h5>
+                <p class="card-text text-white-50">Manage your profile and account settings.</p>
+                <a class="btn btn-secondary" asp-controller="Profile" asp-action="Edit">
+                    Edit My Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+﻿@model List<EasyHousingSolution.Models.Property>
+@{
+    ViewData["Title"] = "Search Properties";
+}
+
+@* This is your existing search filter form, which is great. *@
+<h2><i class="fas fa-search"></i> Search Properties</h2>
+<hr />
+<form method="get" asp-action="Search" class="mb-4 p-3 border rounded">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label">Region</label>
+            <input type="text" name="region" placeholder="e.g., Pune" class="form-control" value="@ViewData["CurrentRegion"]" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Property Type</label>
+            <input type="text" name="type" placeholder="e.g., Apartment" class="form-control" value="@ViewData["CurrentType"]" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Listing Type</label>
+            <select name="propertyOption" class="form-control">
+                <option value="">Any</option>
+                <option value="Sell" selected="@(ViewData["CurrentOption"]?.ToString() == "Sell")">For Sale</option>
+                <option value="Rent" selected="@(ViewData["CurrentOption"]?.ToString() == "Rent")">For Rent</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Min Price (₹)</label>
+            <input type="number" name="minPrice" placeholder="e.g., 500000" class="form-control" value="@ViewData["CurrentMinPrice"]" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Max Price (₹)</label>
+            <input type="number" name="maxPrice" placeholder="e.g., 8000000" class="form-control" value="@ViewData["CurrentMaxPrice"]" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Sort By</label>
+            @Html.DropDownList("sortOrder", new SelectList(new[] { "name", "price" }), new { @class = "form-control" })
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </div>
+</form>
+
+@* --- START OF CORRECTIONS AND ADDITIONS --- *@
+
+@* This new form will wrap the entire results table for the compare feature *@
+<form asp-action="Compare" asp-controller="Buyer" method="post">
+
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <h4>Search Results</h4>
+        <div>
+            @* ADDED: The button to submit the comparison *@
+            <button type="submit" class="btn btn-info">
+                <i class="fas fa-exchange-alt"></i> Compare Selected Properties
+            </button>
+        </div>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <p>No matching properties found.</p>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">Compare</th> @* ADDED: Header for the checkbox column *@
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Option</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center align-middle">
+                            @* ADDED: The checkbox for each property *@
+                            <div class="form-check d-flex justify-content-center">
+                                <input type="checkbox" class="form-check-input" name="ids" value="@item.PropertyId" />
+                            </div>
+                        </td>
+                        <td>@item.PropertyName</td>
+                        <td>@item.PropertyType</td>
+                        <td>@item.PropertyOption</td>
+                        <td>@item.PriceRange.ToString("C")</td>
+                        <td>
+                            @* CORRECTED: Removed the extra, invalid <td> tag *@
+                            <a class="btn btn-sm btn-primary" asp-action="PropertyDetails" asp-controller="Buyer" asp-route-id="@item.PropertyId">
+                                View Details
+                            </a>
+                            <a class="btn btn-sm btn-info add-to-cart-btn" asp-action="AddToCart" asp-controller="Buyer" asp-route-propertyId="@item.PropertyId">
+                                @* CORRECTED: Removed the hardcoded asp-route-buyerId="1" *@
+                                Add to Cart
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</form>

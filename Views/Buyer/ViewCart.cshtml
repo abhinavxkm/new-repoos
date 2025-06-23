@@ -1,0 +1,89 @@
+﻿@model List<EasyHousingSolution.Models.CartViewModel>
+@{
+    ViewData["Title"] = "Your Cart";
+}
+<h2>Your Saved Properties</h2>
+@if (!Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Option</th>
+                <th>Price</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PropertyName</td>
+                    <td>@item.PropertyType</td>
+                    <td>@item.PropertyOption</td>
+                    <td>@item.PriceRange</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" method="post" id="form-@item.CartId">
+                            <input type="hidden" name="cartId" value="@item.CartId" />
+                        </form>
+                        <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmDeleteModal"
+                                data-cart-id="@item.CartId">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove this property from your cart?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Yes, Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var cartIdToDelete;
+
+            // 1. When a "Remove" button is clicked, store its cartId
+            $('.delete-btn').on('click', function () {
+                cartIdToDelete = $(this).data('cart-id');
+            });
+
+            // 2. When the "Yes, Remove" button INSIDE THE MODAL is clicked...
+            $('#confirmDeleteButton').on('click', function () {
+                // Find the specific form that corresponds to the stored cartId
+                var form = $('#form-' + cartIdToDelete);
+                // ...and submit it
+                if(form) {
+                    form.submit();
+                }
+            });
+
+        });
+    </script>
+}

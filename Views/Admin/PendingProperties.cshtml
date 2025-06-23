@@ -1,0 +1,59 @@
+﻿@model List<EasyHousingSolution.Models.Property>
+
+@{
+    ViewData["Title"] = "Pending Property Approvals";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<h2><i class="fas fa-clock"></i> Pending Property Approvals</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-3">
+        There are no properties awaiting verification at the moment.
+    </div>
+}
+else
+{
+    <table class="table table-hover mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Property Name</th>
+                <th>Type</th>
+                <th>Option</th>
+                <th>Price / Rent</th>
+                <th>Seller ID</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PropertyName</td>
+                    <td>@item.PropertyType</td>
+                    <td>@item.PropertyOption</td>
+                    <td>@item.PriceRange.ToString("C")</td>
+                    <td>@item.SellerId</td>
+                    <td class="text-center">
+                        <a class="btn btn-danger btn-sm" asp-action="Approve" asp-route-id="@item.PropertyId" title="Accept">
+                            <i class="fas fa-ban"></i> Accept
+                        </a>
+                        <a class="btn btn-danger btn-sm" asp-action="Deactivate" asp-route-id="@item.PropertyId" title="Reject">
+                            <i class="fas fa-ban"></i> Reject
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="mt-4">
+    <a asp-action="Dashboard" asp-controller="Admin" class="btn btn-outline-light">
+        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    </a>
+</div>
